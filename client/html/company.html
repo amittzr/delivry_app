@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/company.js"></script>
+</head>
+
+<body>
+    <h1 id="company-name">loading...</h1>
+    <p id="description"></p>
+
+    <h2>deliveries:</h2>
+    <div id="shipments-list"></div>
+
+
+    <div id="editShipmentModal" class="modal" style="display:none;">
+        <div class="modal-content"
+            style="background:#fff; padding:20px; border-radius:8px; max-width:400px; margin:100px auto; position:relative;">
+            <span class="close"
+                style="position:absolute; top:10px; right:15px; cursor:pointer; font-size:20px;">&times;</span>
+            <h2>Edit Shipment</h2>
+            <form id="editShipmentForm">
+                <input type="hidden" name="id" id="edit-shipment-id" />
+                <div>
+                    <label for="edit-description">Description:</label><br>
+                    <input type="text" id="edit-description" name="description" required />
+                </div>
+                <div>
+                    <label for="edit-destination">Destination:</label><br>
+                    <input type="text" id="edit-destination" name="destination" required />
+                </div>
+                <div>
+                    <label for="edit-date">Date:</label><br>
+                    <input type="date" id="edit-date" name="date" required />
+                </div>
+                <br>
+                <button type="submit">Save</button>
+            </form>
+        </div>
+    </div>
+
+
+
+    <button id="openModalBtn">create delivery</button>
+
+    <div id="shipmentModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Create new delivery</h2>
+            <form id="shipmentForm">
+                <label>description:</label><br>
+                <input type="text" name="description" required><br><br>
+
+                <label>destination:</label><br>
+                <input type="text" name="destination" required><br><br>
+
+                <label>date:</label><br>
+                <input type="date" name="date" required><br><br>
+
+                <button type="submit">add</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
