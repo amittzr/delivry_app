@@ -99,40 +99,43 @@ module.exports = {
         const companyId = req.params.id;
         const shipmentData = req.body;
 
+        console.log(shipmentData);
+
         readFile(data => {
             if (!data[companyId]) {
                 return res.status(404).send({ error: 'Company not found' });
             }
 
-            const newId = "PACK_" + Date.now();
+            const shipmentId = shipmentData.id || "PACK_" + Date.now();
+
             const newShipment = {
-                [newId]: {
-                    id: newId,
-                    prod_id: shipmentData.prod_id || "UNKNOWN",
+                [shipmentId]: {
+                    id: shipmentId,
+                    prod_id: shipmentData.prod_id,
                     customer: {
-                        id: "default",
-                        name: "unknown",
-                        email: "",
+                        id: shipmentData.customer_id,
+                        name: shipmentData.customer_name,
+                        email: shipmentData.customer_email,
                         address: {
-                            street: "",
-                            number: 0,
-                            city: "",
-                            lon: 0,
-                            lat: 0
+                            street: shipmentData.address.street,
+                            number: shipmentData.address.number,
+                            apt: shipmentData.address.apt,
+                            city: shipmentData.address.city,
+                            lon: shipmentData.route[0].lon,
+                            lat: shipmentData.route[0].lat
                         }
                     },
-                    start_date: Date.now(),
-                    eta: Date.now() + 86400000, // ברירת מחדל: יום קדימה
-                    status: "packed",
-                    path: [],
-                    ...shipmentData
+                    start_date: shipmentData.start_date,
+                    eta: shipmentData.eta,
+                    status: shipmentData.status || "packed",
+                    path: shipmentData.route || []
                 }
             };
 
             data[companyId].push(newShipment);
 
             writeFile(JSON.stringify(data, null, 2), () => {
-                res.status(201).send({ id: newId, ...newShipment[newId] });
+                res.status(201).send({ id: shipmentId, ...newShipment[shipmentId] });
             });
         }, true);
     },
@@ -161,7 +164,7 @@ module.exports = {
     update_shipment: function (req, res) {
         const companyId = req.params.id;
         const shipmentId = req.params.shipmentId;
-        const { description, destination, date } = req.body;
+        const { status, eta } = req.body;
 
         readFile(data => {
             const shipmentsArr = data[companyId];
@@ -170,18 +173,22 @@ module.exports = {
             const index = shipmentsArr.findIndex(obj => obj[shipmentId]);
             if (index === -1) return res.status(404).send({ error: 'Shipment not found' });
 
+            // עדכון רק של השדות שקיבלנו
             shipmentsArr[index][shipmentId] = {
                 ...shipmentsArr[index][shipmentId],
-                description,
-                destination,
-                date
+                status,
+                eta
             };
 
             writeFile(JSON.stringify(data, null, 2), () => {
-                res.status(200).send({ message: 'Shipment updated', shipment: shipmentsArr[index][shipmentId] });
+                res.status(200).send({
+                    message: 'Shipment updated',
+                    shipment: shipmentsArr[index][shipmentId]
+                });
             });
         }, true);
     }
+
 
 
 

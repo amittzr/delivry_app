@@ -3,7 +3,7 @@ $(document).ready(function () {
 
   // הצגת שם ותיאור החברה (אם יש)
   $.getJSON(`/api/company/${id}`)
-    .done(function (data) {
+    .done(function () {
       $('#company-name').text(`Company ${id}`);
       $('#description').text('Shipments Overview');
     })
@@ -12,38 +12,42 @@ $(document).ready(function () {
     });
 
   // טעינת המשלוחים
-  $.getJSON(`/api/companies/${id}/shipments`)
-    .done(function (shipments) {
-      const $container = $('#shipments-list');
-      $container.empty();
+  function loadShipments() {
+    $.getJSON(`/api/companies/${id}/shipments`)
+      .done(function (shipments) {
+        const $container = $('#shipments-list');
+        $container.empty();
 
-      if (!shipments || shipments.length === 0) {
-        $container.html('<p>No shipments for this company.</p>');
-        return;
-      }
+        if (!shipments || shipments.length === 0) {
+          $container.html('<p>No shipments for this company.</p>');
+          return;
+        }
 
-      shipments.forEach(function (shipment) {
-        const startDate = new Date(shipment.start_date).toLocaleString();
-        const etaDate = new Date(shipment.eta).toLocaleDateString();
+        shipments.forEach(function (shipment) {
+          const startDate = new Date(shipment.start_date).toLocaleString();
+          const etaDate = new Date(shipment.eta).toLocaleDateString();
 
-        const $shipmentDiv = $(`
-          <div class="shipment" style="border:1px solid #ccc; padding:10px; margin:10px 0;">
-            <p><strong>Shipment ID:</strong> ${shipment.id}</p>
-            <p><strong>Product ID:</strong> ${shipment.prod_id}</p>
-            <p><strong>Package Name:</strong> ${shipment.description || '-'}</p>
-            <p><strong>Customer ID:</strong> ${shipment.customer?.id || '-'}</p>
-            <p><strong>Start Date:</strong> ${startDate}</p>
-            <p><strong>Estimated Arrival:</strong> ${etaDate}</p>
-            <p><strong>Status:</strong> ${shipment.status}</p>
-            <button class="edit-btn" data-id="${shipment.id}">Edit</button>
-          </div>
-        `);
-        $container.append($shipmentDiv);
+          const $shipmentDiv = $(`
+            <div class="shipment" style="border:1px solid #ccc; padding:10px; margin:10px 0;">
+              <p><strong>Shipment ID:</strong> ${shipment.id}</p>
+              <p><strong>Product ID:</strong> ${shipment.prod_id}</p>
+              <p><strong>Package Name:</strong> ${shipment.description || '-'}</p>
+              <p><strong>Customer ID:</strong> ${shipment.customer?.id || '-'}</p>
+              <p><strong>Start Date:</strong> ${startDate}</p>
+              <p><strong>Estimated Arrival:</strong> ${etaDate}</p>
+              <p><strong>Status:</strong> ${shipment.status}</p>
+              <button class="edit-btn" data-id="${shipment.id}">Edit</button>
+            </div>
+          `);
+          $container.append($shipmentDiv);
+        });
+      })
+      .fail(function () {
+        $('#shipments-list').html('<p>Error loading shipments.</p>');
       });
-    })
-    .fail(function () {
-      $('#shipments-list').html('<p>Error loading shipments.</p>');
-    });
+  }
+
+  loadShipments();
 
   // -------- Modal for Editing Shipments --------
 
