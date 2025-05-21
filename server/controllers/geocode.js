@@ -1,11 +1,12 @@
 const axios = require('axios');
 const fs = require('fs');
+require('dotenv').config();
 
 // Import your delivery.js file to reuse its helper functions
 const deliveryController = require('./delivery');
 
 // LocationIQ API key
-const API_KEY = 'pk.ba10085602b5b2f8783e629e10943242';
+const API_KEY = process.env.GEOCODING_API_KEY;
 
 // Geocode an address and create a package
 exports.geocodeAndCreatePackage = async function(req, res) {

@@ -4,7 +4,8 @@ const express = require('express'),
     fs = require('fs'),
     cors = require('cors'),
     routers = require('./server/routes/routes.js');
-const port = 3001;
+require('dotenv').config();
+const port = process.env.PORT;
 const app = express();
 
 // Serve static files

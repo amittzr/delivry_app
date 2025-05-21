@@ -22,7 +22,10 @@ function loadPackages() {
                 // Store all package data for later use
                 allPackageData = {};
                 
-                result.packages.forEach(packageObj => {
+                // Reverse the order of packages to show newest first
+                const reversedPackages = [...result.packages].reverse();
+                
+                reversedPackages.forEach(packageObj => {
                     const packageId = Object.keys(packageObj)[0];
                     const packageData = packageObj[packageId];
                     
