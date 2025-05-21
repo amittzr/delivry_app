@@ -2,42 +2,134 @@
 <html>
 <head>
     <title>Company List</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <style>
-        .company-button {
-            margin: 5px;
-            padding: 10px 20px;
-            font-size: 18px;
-            cursor: pointer;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-        }
-        .company-button:hover {
-            background-color: #45a049;
-        }
-        h1 {
-            color: #333;
-        }
-        .button-container {
-            margin: 20px 0;
-        }
-    </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/list.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Add debug code to check if CSS is loading -->
+    <script>
+        $(document).ready(function() {
+            // Check if the CSS file is loaded
+            const styleSheets = document.styleSheets;
+            let cssLoaded = false;
+            
+            for (let i = 0; i < styleSheets.length; i++) {
+                if (styleSheets[i].href && styleSheets[i].href.includes('list.css')) {
+                    cssLoaded = true;
+                    console.log('list.css is loaded successfully');
+                    break;
+                }
+            }
+            
+            if (!cssLoaded) {
+                console.error('Warning: list.css could not be loaded!');
+                // Display an error message to the user
+                $('body').prepend('<div style="background-color: #f8d7da; color: #721c24; padding: 10px; margin-bottom: 20px; text-align: center;">CSS file could not be loaded. Please check your server configuration.</div>');
+            }
+            
+            // Print the computed background color of the body
+            const bodyBgColor = window.getComputedStyle(document.body).backgroundColor;
+            console.log('Body background color:', bodyBgColor);
+            
+            // Add inline background color if missing
+            if (bodyBgColor === 'rgba(0, 0, 0, 0)' || bodyBgColor === 'transparent') {
+                console.log('Applying fallback background color');
+                document.body.style.backgroundColor = '#f0f8ff';
+            }
+        });
+    </script>
 </head>
 <body>
-    <h1>Select a Company</h1>
-    <div class="button-container">
-        <button class="company-button" onclick="window.location.href='/list/1'">Company 1</button>
-        <button class="company-button" onclick="window.location.href='/list/2'">Company 2</button>
-        <button class="company-button" onclick="window.location.href='/list/3'">Company 3</button>
-        <button class="company-button" onclick="window.location.href='/list/4'">Company 4</button>
-        <button class="company-button" onclick="window.location.href='/list/5'">Company 5</button>
-        <button class="company-button" onclick="window.location.href='/list/6'">Company 6</button>
-        <button class="company-button" onclick="window.location.href='/list/7'">Company 7</button>
-        <button class="company-button" onclick="window.location.href='/list/8'">Company 8</button>
-        <button class="company-button" onclick="window.location.href='/list/9'">Company 9</button>
-        <button class="company-button" onclick="window.location.href='/list/10'">Company 10</button>
+    <div class="container">
+        <h1>Delivery Management System</h1>
+        
+        <div class="company-grid">
+            <!-- Company cards -->
+            <div class="company-card">
+                <div class="company-header">Company 1</div>
+                <div class="company-body">
+                    <p class="company-info">Manage packages for Company 1</p>
+                    <a href="/list/1" class="btn-view">View Packages</a>
+                </div>
+            </div>
+            
+            <div class="company-card">
+                <div class="company-header">Company 2</div>
+                <div class="company-body">
+                    <p class="company-info">Manage packages for Company 2</p>
+                    <a href="/list/2" class="btn-view">View Packages</a>
+                </div>
+            </div>
+            
+            <div class="company-card">
+                <div class="company-header">Company 3</div>
+                <div class="company-body">
+                    <p class="company-info">Manage packages for Company 3</p>
+                    <a href="/list/3" class="btn-view">View Packages</a>
+                </div>
+            </div>
+            
+            <div class="company-card">
+                <div class="company-header">Company 4</div>
+                <div class="company-body">
+                    <p class="company-info">Manage packages for Company 4</p>
+                    <a href="/list/4" class="btn-view">View Packages</a>
+                </div>
+            </div>
+            
+            <div class="company-card">
+                <div class="company-header">Company 5</div>
+                <div class="company-body">
+                    <p class="company-info">Manage packages for Company 5</p>
+                    <a href="/list/5" class="btn-view">View Packages</a>
+                </div>
+            </div>
+            
+            <div class="company-card">
+                <div class="company-header">Company 6</div>
+                <div class="company-body">
+                    <p class="company-info">Manage packages for Company 6</p>
+                    <a href="/list/6" class="btn-view">View Packages</a>
+                </div>
+            </div>
+            
+            <div class="company-card">
+                <div class="company-header">Company 7</div>
+                <div class="company-body">
+                    <p class="company-info">Manage packages for Company 7</p>
+                    <a href="/list/7" class="btn-view">View Packages</a>
+                </div>
+            </div>
+            
+            <div class="company-card">
+                <div class="company-header">Company 8</div>
+                <div class="company-body">
+                    <p class="company-info">Manage packages for Company 8</p>
+                    <a href="/list/8" class="btn-view">View Packages</a>
+                </div>
+            </div>
+            
+            <div class="company-card">
+                <div class="company-header">Company 9</div>
+                <div class="company-body">
+                    <p class="company-info">Manage packages for Company 9</p>
+                    <a href="/list/9" class="btn-view">View Packages</a>
+                </div>
+            </div>
+            
+            <div class="company-card">
+                <div class="company-header">Company 10</div>
+                <div class="company-body">
+                    <p class="company-info">Manage packages for Company 10</p>
+                    <a href="/list/10" class="btn-view">View Packages</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            &copy; 2025 Delivery Management System
+        </div>
     </div>
 </body>
 </html>
