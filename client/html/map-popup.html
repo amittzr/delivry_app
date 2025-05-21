@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Package Location Map</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/css/map-popup.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+</head>
+<body>
+    <div id="map"></div>
+    <div class="map-info">
+        <h3 id="package-title">Package Path</h3>
+        <p id="package-info"></p>
+        <p id="package-status"></p>
+    </div>
+    <div class="close-btn" onclick="window.close()">&times;</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <script>
+        // Get parameters from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const packageData = JSON.parse(decodeURIComponent(urlParams.get('data')));
+        
+        // Initialize map
+        const map = L.map('map', {
+            zoomControl: false  // Remove zoom control for small window
+        }).setView([31.5, 35.0], 8); // Default center on Israel
+        
+        // Add zoom control to bottom right for better usability in small window
+        L.control.zoom({
+            position: 'bottomright'
+        }).addTo(map);
+        
+        // Add OpenStreetMap tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        
+        // Set package info
+        document.getElementById('package-title').textContent = `Package: ${packageData.id}`;
+        document.getElementById('package-info').textContent = `Customer: ${packageData.customer.name}`;
+        
+        // Add status with appropriate class
+        const statusElement = document.getElementById('package-status');
+        statusElement.innerHTML = `Status: <span class="status status-${packageData.status.toLowerCase().replace(' ', '-')}">${packageData.status}</span>`;
+        
+        // Custom numbered marker icon
+        function createNumberedMarker(number, type) {
+            // Create a div for the marker with a number inside
+            const numberMarkerClass = type ? `number-marker ${type}` : 'number-marker';
+            
+            return L.divIcon({
+                className: numberMarkerClass,
+                html: number,
+                iconSize: [24, 24],
+                iconAnchor: [12, 12],
+                popupAnchor: [0, -12]
+            });
+        }
+        
+        // Add markers for each point in the path
+        const pathCoordinates = [];
+        if (packageData.path && packageData.path.length > 0) {
+            packageData.path.forEach((point, index) => {
+                if (point.lat && point.lon) {
+                    const coordinate = [point.lat, point.lon];
+                    pathCoordinates.push(coordinate);
+                    
+                    // Determine marker type
+                    let markerType = '';
+                    let markerTitle = `Point ${index + 1}`;
+                    
+                    if (index === 0) {
+                        markerType = 'start';
+                        markerTitle = 'Start';
+                    } else if (index === packageData.path.length - 1) {
+                        markerType = 'end';
+                        markerTitle = 'Destination';
+                    }
+                    
+                    // Create numbered marker
+                    const marker = L.marker(coordinate, {
+                        icon: createNumberedMarker(index + 1, markerType)
+                    }).addTo(map);
+                    
+                    marker.bindPopup(`<b>${markerTitle}</b><br>Location #${index + 1}<br>Lat: ${point.lat}<br>Lon: ${point.lon}`);
+                }
+            });
+            
+            // Create a polyline connecting all points
+            if (pathCoordinates.length > 1) {
+                const polyline = L.polyline(pathCoordinates, {color: '#3498db', weight: 3}).addTo(map);
+                
+                // Zoom to fit the path
+                map.fitBounds(polyline.getBounds(), {
+                    padding: [30, 30] // Add padding for better visibility
+                });
+            } else if (pathCoordinates.length === 1) {
+                map.setView(pathCoordinates[0], 15);
+            }
+        } else {
+            // If no path is available, center on customer address
+            if (packageData.customer && packageData.customer.address && 
+                packageData.customer.address.lat && packageData.customer.address.lon) {
+                const coordinate = [packageData.customer.address.lat, packageData.customer.address.lon];
+                const marker = L.marker(coordinate, {
+                    icon: createNumberedMarker(1, 'start')
+                }).addTo(map);
+                
+                marker.bindPopup(`<b>Customer Location</b><br>Location #1<br>${packageData.customer.address.street} ${packageData.customer.address.number}, ${packageData.customer.address.city}`).openPopup();
+                map.setView(coordinate, 15);
+            }
+        }
+    </script>
+</body>
+</html>

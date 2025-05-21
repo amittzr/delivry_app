@@ -1,0 +1,76 @@
+.form-actions {
+    margin-top: 20px;
+    margin-bottom: 40px;
+    text-align: right;
+}
+
+.help-block {
+    color: #d9534f;
+    margin-top: 5px;
+    font-size: 0.9em;
+}
+
+.has-error .form-control {
+    border-color: #d9534f;
+}
+
+.panel {
+    margin-bottom: 20px;
+}
+
+.panel-primary > .panel-heading {
+    background-color: #337ab7;
+    border-color: #337ab7;
+    color: white;
+}
+
+.btn-primary {
+    background-color: #337ab7;
+    border-color: #2e6da4;
+}
+
+.btn-primary:hover {
+    background-color: #286090;
+    border-color: #204d74;
+}
+
+h1 {
+    margin-bottom: 30px;
+}
+
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 18px;
+    display: none;
+}
+
+.loading-spinner {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.alert {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}

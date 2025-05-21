@@ -1,18 +1,17 @@
 const express = require('express');
-const companyRoutes = require('./companyService');
-var router = express.Router();
+const router = express.Router();
+const delivery = require('../controllers/delivery');
+const geocode = require('../controllers/geocode');
 
+// Delivery routes
+router.get('/companies', delivery.read_all_companies);
+router.get('/company/:id/packages', delivery.read_company_packages);
+router.post('/company/:id/package', delivery.create_package);
+router.put('/company/:companyId/package/:packageId', delivery.update_package);
+router.delete('/company/:companyId/package/:packageId', delivery.delete_package);
 
-router.get('/companies', companyRoutes.read_companies);
-router.get('/company/:id', companyRoutes.get_company_by_id);
-
-router.post('/companies/:id/shipments', companyRoutes.create_shipment);
-router.get('/companies/:id/shipments', companyRoutes.get_shipment_by_company);
-router.put('/companies/:id/shipments/:shipmentId', companyRoutes.update_shipment);
-
-
-// router.post('/companies', companyRoutes.create_company);
-// router.put('/companies/:id', companyRoutes.update_company);
-// router.delete('/companies/:id', companyRoutes.delete_company);
+// Geocoding route
+router.post('/geocode-and-create/:companyId', geocode.geocodeAndCreatePackage);
+router.post('/geocode', geocode.geocodeAddress);  // New endpoint for address geocoding
 
 module.exports = router;

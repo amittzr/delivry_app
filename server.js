@@ -5,43 +5,35 @@ const express = require('express'),
     cors = require('cors'),
     routers = require('./server/routes/routes.js');
 const port = 3001;
-const companyService = require('./server/routes/companyService');
+const app = express();
 
-const app=express();
+// Serve static files
+app.use(express.static(path.join(__dirname, 'client')));
 
-// app.use('/', express.static(path.join(__dirname, 'client/html/index.html')));
-app.use('/main', express.static(path.join(__dirname, 'client/html/index.html')));
-app.use('/list_users', express.static(path.join(__dirname, 'client/html/index.html')));
-app.use('/add_user', express.static(path.join(__dirname, 'client/html/add_user_form.html')));
-
-app.use('/js', express.static(path.join(__dirname, 'client/js')));
-
-app.get('/',(req,res) => {fs.readFile('client/html/home_test.html',  (err, html) => {
-    if (err) {
-        throw err; 
-    }       
-    
-    res.writeHeader(200, {"Content-Type": "text/html"});  
-    res.write(html);  
-    res.end();  
-    })
+// Routes for main pages
+app.get('/list', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client/html/list.html'));
 });
 
-
-app.get('/company/:id', async (req, res) => {
-    res.sendFile(path.join(__dirname, 'client/html/company.html'));
+app.get('/list/:companyId', (req, res) => {
+    // Send the company packages page
+    res.sendFile(path.join(__dirname, 'client/html/company_packages.html'));
 });
 
+app.get('/add_package/:companyId', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client/html/add_package.html'));
+});
 
-app.use('/css', express.static(path.join(__dirname, 'client/css')));
+app.get('/map-popup.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client/html/map-popup.html'));
+});
 
-//restfull 
-//app.use(cors());
+// Configure middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/', routers);
 
-app.use('/api', routers);
-
+// Start the server
 const server = app.listen(port, () => {
     console.log('listening on port %s...', server.address().port);
 });

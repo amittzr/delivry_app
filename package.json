@@ -1,24 +1,19 @@
 {
-  "name": "api-server-starter",
+  "name": "your-project-name",
   "version": "1.0.0",
-  "description": "A lightweight starter kit for building a Node-based API server",
+  "description": "Your project description",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon server.js"
   },
-  "keywords": [
-    "api",
-    "node",
-    "api-server",
-    "express",
-    "starter",
-    "kit"
-  ],
   "dependencies": {
-    "body-parser": "^1.18.3",
+    "axios": "^1.9.0",
+    "body-parser": "^1.19.0",
     "cors": "^2.8.5",
-    "express": "^4.16.4",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
     "nodemon": "^3.1.10"
   }
 }

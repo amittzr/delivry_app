@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+<head>
+    <title>Add New Package</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/package.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+    <script src="/js/package_utils.js"></script>
+</head>
+<body>
+    <div class="col-sm-8 col-sm-offset-2">
+        <h1>Add New Package for Company <span id="company-id"></span></h1>
+        
+        <!-- OUR FORM -->
+        <form id="package_form" name="package_form" method="POST">
+            <!-- Package Info Section -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Package Information</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="package_id">Package ID</label>
+                                <input type="text" class="form-control" name="package_id" id="package_id" placeholder="Enter package ID" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="prod_id">Product ID</label>
+                                <input type="text" class="form-control" name="prod_id" id="prod_id" placeholder="Enter product ID" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Customer Info Section -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Customer Information</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="customer_id">Customer ID</label>
+                                <input type="text" class="form-control" name="customer_id" id="customer_id" placeholder="Enter customer ID" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="customer_name">Customer Name</label>
+                                <input type="text" class="form-control" name="customer_name" id="customer_name" placeholder="Enter customer name" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="customer_email">Customer Email</label>
+                        <input type="email" class="form-control" name="customer_email" id="customer_email" placeholder="customer@example.com" required>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Address Info Section -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Address Information</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label for="street">Street</label>
+                                <input type="text" class="form-control" name="street" id="street" placeholder="Enter street name" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="street_number">Street Number</label>
+                                <input type="number" class="form-control" name="street_number" id="street_number" placeholder="Enter street number" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" class="form-control" name="city" id="city" placeholder="Enter city" required>
+                    </div>
+                    <div class="alert alert-info">
+                        <small>We'll automatically calculate the coordinates using the address you provide.</small>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Delivery Info Section -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Delivery Information</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="start_date">Start Date</label>
+                                <input type="date" class="form-control" name="start_date" id="start_date" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="start_time">Start Time</label>
+                                <input type="time" class="form-control" name="start_time" id="start_time" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="eta_date">Estimated Arrival Date</label>
+                                <input type="date" class="form-control" name="eta_date" id="eta_date" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="eta_time">Estimated Arrival Time</label>
+                                <input type="time" class="form-control" name="eta_time" id="eta_time" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select class="form-control" name="status" id="status" required>
+                            <option value="packed">Packed</option>
+                            <option value="shipped">Shipped</option>
+                            <option value="in transit">In Transit</option>
+                            <option value="delivered">Delivered</option>
+                            <option value="canceled">Canceled</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="button" class="btn btn-default" onclick="window.location.href='/list/' + getCurrentCompanyId()">Cancel</button>
+                <button type="submit" class="btn btn-primary">Create Package</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
