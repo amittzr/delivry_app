@@ -1,0 +1,98 @@
+{
+	"info": {
+		"_postman_id": "f71829ab-5362-42c8-886a-85b1a986e21d",
+		"name": "Company Package API Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39781814"
+	},
+	"item": [
+		{
+			"name": "Get Package by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"PACK_ID1 has required fields\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    const packages = jsonData.packages;",
+							"    const firstPack = packages.find(p => p[\"PACK_ID1\"]);",
+							"    pm.expect(firstPack).to.not.be.undefined;",
+							"    const packData = firstPack[\"PACK_ID1\"];",
+							"    pm.expect(packData).to.have.property(\"id\");",
+							"    pm.expect(packData).to.have.property(\"prod_id\");",
+							"    pm.expect(packData).to.have.property(\"status\");",
+							"    pm.expect(packData).to.have.property(\"customer\");",
+							"    pm.expect(packData).to.have.property(\"path\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/company/1/packages",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"company",
+						"1",
+						"packages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Package by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 or 204\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 204]);",
+							"});",
+							"",
+							"pm.test(\"Response time is below 300ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(300);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/company/1/package/1111",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"company",
+						"1",
+						"package",
+						"1111"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

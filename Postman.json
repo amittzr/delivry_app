@@ -1,0 +1,140 @@
+{
+  "info": {
+    "_postman_id": "e9e2f3c6-3121-4b7e-930d-ff230c258dc4",
+    "name": "Company Package API Tests (Updated)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Package with ID 1111",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": \"1111\",\n  \"prod_id\": \"PROD_ID1111\",\n  \"customer\": {\n    \"id\": \"cust_1111\",\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"address\": {\n      \"street\": \"Main St\",\n      \"number\": 123,\n      \"city\": \"Sample City\",\n      \"lon\": 32.0625439,\n      \"lat\": 34.7699465\n    }\n  },\n  \"start_date\": 1746907533,\n  \"eta\": 1747771531,\n  \"status\": \"packed\",\n  \"path\": []\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3001/company/1/package",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3001",
+          "path": [
+            "company",
+            "1",
+            "package"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200 or 201\", function () {",
+              "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+              "});",
+              "pm.test(\"Response contains package ID 1111\", function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.id).to.eql(\"1111\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get Package by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3001/company/1/package/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3001",
+          "path": [
+            "company",
+            "1",
+            "package",
+            "1"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"PACK_ID1 has required fields\", function () {",
+              "    const jsonData = pm.response.json();",
+              "    const packages = jsonData.packages;",
+              "    const firstPack = packages.find(p => p[\"PACK_ID1\"]);",
+              "    pm.expect(firstPack).to.not.be.undefined;",
+              "    const packData = firstPack[\"PACK_ID1\"];",
+              "    pm.expect(packData).to.have.property(\"id\");",
+              "    pm.expect(packData).to.have.property(\"prod_id\");",
+              "    pm.expect(packData).to.have.property(\"status\");",
+              "    pm.expect(packData).to.have.property(\"customer\");",
+              "    pm.expect(packData).to.have.property(\"path\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Delete Package by ID",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3001/company/1/package/1111",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3001",
+          "path": [
+            "company",
+            "1",
+            "package",
+            "1"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200 or 204\", function () {",
+              "    pm.expect(pm.response.code).to.be.oneOf([200, 204]);",
+              "});",
+              "",
+              "pm.test(\"Response time is below 300ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(300);",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
