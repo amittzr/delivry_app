@@ -87,7 +87,7 @@ function loadPackages() {
                             <div class="action-buttons">
                                 <button class="add-location-button" onclick="openLocationModal('${packageId}')">Add Location</button>
                                 <button class="update-button" onclick="openUpdateModal('${packageId}')">Update</button>
-                                <button class="delete-button" onclick="openDeleteConfirmation('${packageId}')">Delete</button>
+                                <!-- <button class="delete-button" onclick="openDeleteConfirmation('${packageId}')">Delete</button> -->
                             </div>
                         </div>
                     `;

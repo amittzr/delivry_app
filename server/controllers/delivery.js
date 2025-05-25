@@ -186,32 +186,32 @@ module.exports = {
     },
     
     // DELETE a package
-    delete_package: function (req, res) {
-        readFile(data => {
-            const companyId = req.params.companyId;
-            const packageId = req.params.packageId;
+    // delete_package: function (req, res) {
+    //     readFile(data => {
+    //         const companyId = req.params.companyId;
+    //         const packageId = req.params.packageId;
             
-            // Check if company exists
-            if (!data[companyId]) {
-                return res.status(404).send(`Company ${companyId} not found`);
-            }
+    //         // Check if company exists
+    //         if (!data[companyId]) {
+    //             return res.status(404).send(`Company ${companyId} not found`);
+    //         }
             
-            // Find and remove the package
-            const initialLength = data[companyId].length;
-            data[companyId] = data[companyId].filter(pkg => {
-                const pkgKey = Object.keys(pkg)[0];
-                return pkgKey !== packageId;
-            });
+    //         // Find and remove the package
+    //         const initialLength = data[companyId].length;
+    //         data[companyId] = data[companyId].filter(pkg => {
+    //             const pkgKey = Object.keys(pkg)[0];
+    //             return pkgKey !== packageId;
+    //         });
             
-            if (data[companyId].length === initialLength) {
-                return res.status(404).send(`Package ${packageId} not found in company ${companyId}`);
-            }
+    //         if (data[companyId].length === initialLength) {
+    //             return res.status(404).send(`Package ${packageId} not found in company ${companyId}`);
+    //         }
             
-            writeFile(JSON.stringify(data, null, 2), () => {
-                res.status(200).send(`Package ${packageId} removed from company ${companyId}`);
-            });
-        }, true);
-    },
+    //         writeFile(JSON.stringify(data, null, 2), () => {
+    //             res.status(200).send(`Package ${packageId} removed from company ${companyId}`);
+    //         });
+    //     }, true);
+    // },
     
     // ADD a location to a package's path
     add_location_to_path: function (req, res) {
