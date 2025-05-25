@@ -149,6 +149,7 @@ function setupFormSubmission() {
         // Get form values
         const packageId = $('#package_id').val();
         const prodId = $('#prod_id').val();
+        const packageName = $('#package_name').val();
         const customerId = $('#customer_id').val();
         const customerName = $('#customer_name').val();
         const customerEmail = $('#customer_email').val();
@@ -173,6 +174,7 @@ function setupFormSubmission() {
         const packageData = {
             packageId: packageId,
             prodId: prodId,
+            packageName:packageName,
             customerId: customerId,
             customerName: customerName,
             customerEmail: customerEmail,

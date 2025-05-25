@@ -105,6 +105,7 @@ module.exports = {
                     [packageId]: {
                         id: packageId,
                         prod_id: packageData.prodId,
+                        name: packageData.packageName,
                         customer: {
                             id: packageData.customerId,
                             name: packageData.customerName,

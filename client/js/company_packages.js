@@ -64,8 +64,13 @@ function loadPackages() {
                                 <span class="package-id clickable" onclick="showPackageMap('${packageId}')">Package: ${packageData.id}</span>
                                 <span class="prod-id">Product ID: ${packageData.prod_id}</span>
                             </div>
+                            
                             <div>
-                                <span>Customer: </span>
+                               <p><strong>Package Name:</strong> ${packageData.name}</p>
+                            </div>
+
+                            <div>
+                                <span><strong>Customer: </strong></span>
                                 <span class="customer-id" onclick="toggleCustomerInfo('${packageId}')">${packageData.customer.id}</span>
                             </div>
                             <div class="customer-info" id="customer-${packageId}" style="display: none;">

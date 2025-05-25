@@ -52,6 +52,7 @@ exports.geocodeAndCreatePackage = async function(req, res) {
             [packageId]: {
                 id: packageId,
                 prod_id: packageData.prodId,
+                name: packageData.packageName,
                 customer: {
                     id: packageData.customerId,
                     name: packageData.customerName,
