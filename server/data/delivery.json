@@ -55,34 +55,6 @@
           }
         ]
       }
-    },
-    {
-      "PACK_ID1": {
-        "id": "PACK_ID1",
-        "prod_id": "12345",
-        "name": "qwert",
-        "customer": {
-          "id": "2345",
-          "name": "qwerty",
-          "email": "aa@ww.com",
-          "address": {
-            "street": "Hillel",
-            "number": 1,
-            "city": "Jerusalem",
-            "lon": 35.2159793,
-            "lat": 31.780471
-          }
-        },
-        "start_date": 1748539560,
-        "eta": 1748798760,
-        "status": "packed",
-        "path": [
-          {
-            "lat": 31.780471,
-            "lon": 35.2159793
-          }
-        ]
-      }
     }
   ],
   "2": [
