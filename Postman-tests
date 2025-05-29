@@ -1,0 +1,123 @@
+{
+	"info": {
+		"_postman_id": "1d047f85-db49-4a7b-916f-2e0e9d4a81d1",
+		"name": "ex325_b_custom",
+		"description": "This collection includes requests to create a business with a package and add a location to the delivery path.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39781814"
+	},
+	"item": [
+		{
+			"name": "Create business with package",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"POST should return 200 or 201\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"});",
+							"",
+							"pm.test(\"Extract package ID\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.environment.set(\"resourceId\", jsonData.id);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": \"PACK_ID10\",\n  \"prod_id\": \"PROD_ID1\",\n  \"name\": \"pack_name\",\n  \"customer\": {\n    \"id\": \"1111111\",\n    \"name\": \"Alon Lev\",\n    \"email\": \"alon111@gmail.com\",\n    \"address\": {\n      \"street\": \"Hillel\",\n      \"number\": 1,\n      \"city\": \"Jerusalem\",\n      \"lon\": 35.2159793,\n      \"lat\": 31.780471\n    }\n  },\n  \"start_date\": 1746907533,\n  \"eta\": 1747771531,\n  \"status\": \"packed\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/{{resources}}/1/{{packages}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"{{resources}}",
+						"1",
+						"{{packages}}"
+					]
+				},
+				"description": "Creates a new package in the business with ID 1."
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"POST should return 200 or 201\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([400, 404]);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": \"-\",\r\n  \"prod_id\": \"!\",\r\n  \"name\":\"name2\",\r\n  \"customer\": {\r\n    \"id\": \"222222\",\r\n    \"name\": \"Jhon Doe\",\r\n    \"email\": \"jhon@example.com\",\r\n    \"address\": {\r\n      \"street\": \"Hertzel\",\r\n      \"number\": 10,\r\n      \"city\": \"Tel Aviv\",\r\n      \"lon\": 32.0625439,\r\n      \"lat\": 34.7699465\r\n    }\r\n  },\r\n  \"start_date\": 1746907533,\r\n  \"eta\": 1747771531,\r\n  \"status\": \"packed\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/{{resources}}/1/{{packages}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"{{resources}}",
+						"1",
+						"{{packages}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3001"
+		},
+		{
+			"key": "resources",
+			"value": "buisness"
+		},
+		{
+			"key": "packages",
+			"value": "packages"
+		},
+		{
+			"key": "path",
+			"value": "path"
+		},
+		{
+			"key": "resourceId",
+			"value": ""
+		}
+	]
+}
