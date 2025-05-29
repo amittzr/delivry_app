@@ -1,0 +1,111 @@
+{
+	"info": {
+		"_postman_id": "abc12345-6789-4321-bcde-1234567890ab",
+		"name": "ex325_b_custom",
+		"description": "This collection includes requests to create a business with a package and add a location to the delivery path.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9566643"
+	},
+	"item": [
+		{
+			"name": "Create business with package",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"POST should return 200 or 201\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"});",
+							"",
+							"pm.test(\"Extract package ID\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.environment.set(\"resourceId\", jsonData.id);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": \"PACK_ID1\",\n  \"prod_id\": \"PROD_ID1\",\n  \"customer\": {\n    \"id\": \"1111111\",\n    \"name\": \"Alon Lev\",\n    \"email\": \"alon111@gmail.com\",\n    \"address\": {\n      \"street\": \"Hertzel\",\n      \"number\": 10,\n      \"city\": \"Tel Aviv\",\n      \"lon\": 32.0625439,\n      \"lat\": 34.7699465\n    }\n  },\n  \"start_date\": 1746907533,\n  \"eta\": 1747771531,\n  \"status\": \"packed\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/{{resources}}/1/{{packages}}",
+					"host": ["{{base_url}}"],
+					"path": ["{{resources}}", "1", "{{packages}}"]
+				},
+				"description": "Creates a new package in the business with ID 1."
+			},
+			"response": []
+		},
+		{
+			"name": "Add location to path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"PUT should return 200 or 201\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"lon\": 32.0263808,\n  \"lat\": 34.02655808\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/{{resources}}/1/{{packages}}/{{resourceId}}/{{path}}",
+					"host": ["{{base_url}}"],
+					"path": ["{{resources}}", "1", "{{packages}}", "{{resourceId}}", "{{path}}"]
+				},
+				"description": "Adds a location to the path of the specified package."
+			},
+			"response": []
+		}
+	],
+	"event": [],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3001"
+		},
+		{
+			"key": "resources",
+			"value": "buisness"
+		},
+		{
+			"key": "packages",
+			"value": "packages"
+		},
+		{
+			"key": "path",
+			"value": "path"
+		},
+		{
+			"key": "resourceId",
+			"value": ""
+		}
+	]
+}

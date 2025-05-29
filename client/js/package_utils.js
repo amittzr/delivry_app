@@ -3,6 +3,30 @@ $.validator.addMethod("textOnly", function(value, element) {
     return this.optional(element) || /^[a-zA-Z\s.-]+$/.test(value);
 }, "This field can only contain letters and spaces");
 
+// Add custom validation method for unique package ID
+$.validator.addMethod("uniquePackageId", function(value, element) {
+    if (!value) return true; // Let required validation handle empty values
+    
+    let isUnique = true;
+    const companyId = getCurrentCompanyId();
+    
+    // Make synchronous AJAX call to check uniqueness
+    $.ajax({
+        type: 'GET',
+        url: `/api/check-package-id/${companyId}/${encodeURIComponent(value)}`,
+        async: false, // Make it synchronous for validator
+        success: function(response) {
+            isUnique = !response.exists;
+        },
+        error: function() {
+            // If API call fails, assume it's unique to not block form submission
+            isUnique = true;
+        }
+    });
+    
+    return isUnique;
+}, "This package ID is already in use. Please choose a different one.");
+
 $(document).ready(function () {
     // Set company ID in the title
     const companyId = getCurrentCompanyId();
@@ -59,7 +83,8 @@ function setupFormValidation() {
         rules: {
             package_id: {
                 required: true,
-                minlength: 4
+                minlength: 4,
+                uniquePackageId: true
             },
             prod_id: {
                 required: true,
@@ -93,7 +118,8 @@ function setupFormValidation() {
         messages: {
             package_id: {
                 required: "Package ID is required",
-                minlength: "Package ID must be at least 4 characters long"
+                minlength: "Package ID must be at least 4 characters long",
+                uniquePackageId: "This package ID is already in use. Please choose a different one."
             },
             prod_id: {
                 required: "Product ID is required",
@@ -204,7 +230,19 @@ function setupFormSubmission() {
             },
             error: function(jqXhr, textStatus, errorThrown) {
                 console.log("Error creating package:", errorThrown);
-                alert("Failed to create package. Please verify the address is valid and try again.");
+                
+                // Handle specific error messages
+                let errorMessage = "Failed to create package. Please try again.";
+                if (jqXhr.responseJSON && jqXhr.responseJSON.details) {
+                    const details = jqXhr.responseJSON.details;
+                    if (details.includes('Package ID already exists')) {
+                        errorMessage = "This package ID is already in use. Please choose a different one.";
+                    } else if (details.includes('address')) {
+                        errorMessage = "Failed to create package. Please verify the address is valid and try again.";
+                    }
+                }
+                
+                alert(errorMessage);
                 $('button[type="submit"]').prop('disabled', false).text('Create Package');
             }
         });

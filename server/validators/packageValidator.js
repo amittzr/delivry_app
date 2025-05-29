@@ -59,11 +59,45 @@ function validatePackageData(data) {
         console.log('✅ Customer name validation passed:', customerName);
     }
 
-    if (!customerEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail)) {
-        console.log('❌ Customer email validation failed:', customerEmail);
-        errors.push('Invalid email format');
+    if (!customerEmail) {
+        console.log('❌ Customer email validation failed: email is required');
+        errors.push('Customer email is required');
     } else {
         console.log('✅ Customer email validation passed:', customerEmail);
+    }
+
+    // Check for coordinates and validate Israel boundaries (optional check)
+    const lat = data.lat || (address && address.lat);
+    const lon = data.lon || (address && address.lon);
+    
+    console.log('Coordinates check (optional):');
+    console.log('- lat:', lat);
+    console.log('- lon:', lon);
+
+    // Only validate Israel boundaries IF coordinates are provided
+    if (lat !== undefined && lon !== undefined && lat !== null && lon !== null) {
+        const latNum = parseFloat(lat);
+        const lonNum = parseFloat(lon);
+        
+        console.log('- parsed lat:', latNum);
+        console.log('- parsed lon:', lonNum);
+
+        // Check if coordinates are valid numbers
+        if (isNaN(latNum) || isNaN(lonNum)) {
+            console.log('❌ Coordinates validation failed: Invalid numbers');
+            errors.push('Invalid coordinates: lat and lon must be valid numbers');
+        } else {
+            // Check if coordinates are within Israel's approximate boundaries
+            // Israel's approximate boundaries: lat: 29.5-33.5, lon: 34.2-35.9
+            if (latNum < 29.5 || latNum > 33.5 || lonNum < 34.2 || lonNum > 35.9) {
+                console.log('❌ Israel boundaries validation failed:', { lat: latNum, lon: lonNum });
+                errors.push('Address coordinates appear to be outside Israel boundaries');
+            } else {
+                console.log('✅ Israel boundaries validation passed:', { lat: latNum, lon: lonNum });
+            }
+        }
+    } else {
+        console.log('ℹ️ No coordinates provided - skipping Israel boundaries check (this is normal for non-geocoded packages)');
     }
     
     // Address validation (commented out as in your original code)
