@@ -1,3 +1,5 @@
+// geocode.js
+
 const axios = require('axios');
 const fs = require('fs');
 require('dotenv').config();
@@ -46,65 +48,41 @@ exports.geocodeAndCreatePackage = async function(req, res) {
             return res.status(400).json({ error: 'Address appears to be outside Israel' });
         }
         
-        // Create the package object with the structure expected by the delivery.json file
-        const packageId = packageData.packageId;
-        const formattedPackageData = {
-            [packageId]: {
-                id: packageId,
-                prod_id: packageData.prodId,
-                name: packageData.packageName,
-                customer: {
-                    id: packageData.customerId,
-                    name: packageData.customerName,
-                    email: packageData.customerEmail,
-                    address: {
-                        street: packageData.street,
-                        number: packageData.streetNumber,
-                        city: packageData.city,
-                        lon: lon,
-                        lat: lat
-                    }
-                },
-                start_date: packageData.startDate,
-                eta: packageData.eta,
-                status: packageData.status,
-                path: [
-                    {
-                        lon: lon,
-                        lat: lat
-                    },
-                ]
-            }
+        // Create package data in the format expected by delivery.create_package (Postman format)
+        const packageForDelivery = {
+            id: packageData.packageId,
+            prod_id: packageData.prodId,
+            name: packageData.packageName,
+            customer: {
+                id: packageData.customerId,
+                name: packageData.customerName,
+                email: packageData.customerEmail,
+                address: {
+                    street: packageData.street,
+                    number: packageData.streetNumber,
+                    city: packageData.city,
+                    lon: lon,
+                    lat: lat
+                }
+            },
+            start_date: packageData.startDate,
+            eta: packageData.eta,
+            status: packageData.status,
+            path: [
+                {
+                    lat: lat,
+                    lon: lon
+                }
+            ]
         };
         
-        // Read the delivery.json file
-        fs.readFile('./server/data/delivery.json', 'utf8', (err, data) => {
-            if (err) {
-                console.log(err);
-                return res.status(500).json({ error: 'Failed to read delivery data' });
-            }
-            
-            // Parse the JSON data
-            const deliveryData = !data ? {} : JSON.parse(data);
-            
-            // Initialize company array if it doesn't exist
-            if (!deliveryData[companyId]) {
-                deliveryData[companyId] = [];
-            }
-            
-            // Add the new package
-            deliveryData[companyId].push(formattedPackageData);
-            
-            // Write back to the file
-            fs.writeFile('./server/data/delivery.json', JSON.stringify(deliveryData, null, 2), 'utf8', (err) => {
-                if (err) {
-                    console.log(err);
-                    return res.status(500).json({ error: 'Failed to save package data' });
-                }
-                
-                res.status(200).json({ message: `New package added to company ${companyId}` });
-            });
-        });
+        // Modify the request to use the delivery controller
+        req.body = packageForDelivery;
+        req.params.id = companyId;
+        
+        // Use the delivery controller to create the package
+        deliveryController.create_package(req, res);
+        
     } catch (error) {
         console.error('Geocoding error:', error.message);
         res.status(500).json({ error: 'Failed to geocode address or create package' });
