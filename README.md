@@ -3,7 +3,6 @@
 
 ## Submitted by:
 - Amit Tzruya - 207836404
-- Orel Raz - 207310806
 
 ## Project Summary
 This project implements a real-time delivery tracking system using a distributed client-server architecture with RESTful API principles. The server is built with Node.js and Express, and uses MongoDB for data storage via Mongoose. The client-side is implemented with HTML, CSS, and JavaScript (jQuery + AJAX).
